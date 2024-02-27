@@ -1,12 +1,10 @@
-
-
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Pressable } from 'react-native';
 import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Validator from 'email-validator';
 import { app } from '../../FirebaseConfig';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth'; // Auth kütüphanesinden import ediliyor
 import { getAuth } from "firebase/auth";
 
 const auth = getAuth(app);
@@ -22,9 +20,9 @@ const SignUpForm = ({ navigation }) => {
     const { email, password, username } = values;
     setLoading(true);
     try {
-      const response = await createUserWithEmailAndPassword(auth, email, username, password);
+      const response = await createUserWithEmailAndPassword(auth,email,password, username); // Kullanıcı adı kaldırıldı
       console.log(response);
-      alert('Check your emails.');
+      alert('Register Successful!');
     } catch (error) {
       console.log(error);
       alert('Sign up failed: ' + error.message);
@@ -36,7 +34,7 @@ const SignUpForm = ({ navigation }) => {
   return (
     <View style={styles.wrapper}>
       <Formik
-        initialValues={{ email: '', username: '', password: '' }} // username alanını ekledim
+        initialValues={{ email: '', username: '', password: '' }}
         onSubmit={values => {
           console.log(values);
           register(values)
@@ -67,7 +65,7 @@ const SignUpForm = ({ navigation }) => {
             </View>
             <View style={[styles.inputField,
             {
-              borderColor: values.username.length > 2 ? '#ccc' : 'red' // username uzunluğunu kontrol et
+              borderColor: values.username.length > 2 ? '#ccc' : 'red'
             }
             ]}>
               <TextInput
@@ -83,7 +81,7 @@ const SignUpForm = ({ navigation }) => {
             </View>
             <View style={[styles.inputField,
             {
-              borderColor: values.password.length > 6 ? '#ccc' : 'red' // parola uzunluğunu kontrol et
+              borderColor: values.password.length > 6 ? '#ccc' : 'red'
             }
             ]}>
               <TextInput

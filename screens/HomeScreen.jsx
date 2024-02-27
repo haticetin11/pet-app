@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, View, Text, Image, TouchableOpacity, FlatList } from 'react-native'
-import React, {useState} from 'react'
+import React, {useState } from 'react'
 import Header from '../components/home/Header';
 import Stories from '../components/home/Stories';
 import Post from '../components/home/Post';
@@ -7,6 +7,10 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { POSTS } from '../data/posts';
 import BottomTabs, { bottomTabIcons } from '../components/home/BottomTabs';
 import Icons from '@expo/vector-icons/MaterialIcons'
+import { getAuth } from '@firebase/auth';
+import {app} from '../FirebaseConfig'
+
+const auth = getAuth(app);
 
 const Categories = [
   "Kedi",
@@ -30,7 +34,7 @@ const HomeScreen = ({ navigation }) => {
           />
           <View style={{flex: 1}}>
             <Text style={{fontSize: 18, fontWeight: "600", marginBottom: 6, color: 'black'}} numberOfLines={1}>
-              Hi, User!
+              Hoş Geldiniz!
             </Text>
             <Text style={{color: 'slategray', opacity: 0.75}} numberOfLines={1}>
               Let's rescue some pets today!
