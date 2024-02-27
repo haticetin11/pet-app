@@ -29,4 +29,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ProfileDashboard
+export default ProfileDashboard;

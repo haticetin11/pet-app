@@ -1,21 +1,20 @@
-import { View, Text, Pressable, StyleSheet, Alert, Image, FlatList, ScrollView, Dimensions, TouchableOpacity, Animated } from 'react-native'
-import React,{ useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import ProfilePic from '../components/profile/ProfilePic'
-import BottomTabs, { bottomTabIcons } from '../components/home/BottomTabs'
+import React, { useEffect, useState } from 'react';
+import { View, Text, Pressable, StyleSheet, Alert, Image, FlatList, ScrollView, Dimensions } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ProfilePic } from '../components/profile/ProfilePic'; 
+import BottomTabs, { bottomTabIcons } from '../components/home/BottomTabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { Divider } from 'react-native-elements'
-import { userPosts } from '../data/posts'
-import Header from '../components/home/Header';
-// import { getAuth } from "firebase/auth";
-import { app } from '../FirebaseConfig'
-import { getAuth } from "firebase/auth";
-
-
+import { Divider } from 'react-native-elements';
+import { userPosts } from '../data/posts';
+import HeaderProfile from '../components/profile/HeaderProfile'; 
+import ProfileDashboard from '../components/profile/ProfileDashboard'; 
+import { getAuth } from '@firebase/auth';
+import {app} from '../FirebaseConfig'
 
 const auth = getAuth(app);
+
 const Tab = createMaterialTopTabNavigator();
-const numberOfCols = 3
+const numberOfCols = 3;
 
 const ProfileScreen = ({ navigation }) => {
     const [userEmail, setUserEmail] = useState(null);
@@ -32,20 +31,19 @@ const ProfileScreen = ({ navigation }) => {
         return unsubscribe;
     }, []);
 
-
     return (
         <SafeAreaView style={styles.container}>
-            <Header navigation={navigation} />
+            <HeaderProfile navigation={navigation} />
             <View style={styles.dashboard}>
                 <ProfilePic />
                 <Text><Bio userEmail={userEmail} /> {/* Bio component'ine userEmail prop'unu geçiyoruz */}</Text>
             </View>
-            <BottomActions />
+            <BottomActions navigation={navigation} />
             <BottomTabs icons={bottomTabIcons} navigation={navigation} />
             <Divider />
             <Tabs />
         </SafeAreaView>
-    )
+    );
 }
 
 const Bio = ({ userEmail }) => (
@@ -58,12 +56,18 @@ const Bio = ({ userEmail }) => (
     </View>
   );
 
-const BottomActions = () => (
+
+const BottomActions = ({navigation}) => (
     <View style={{ flexDirection: 'row', justifyContent: 'center', margin: 10 }}>
         <Pressable
             style={styles.buttomActionStyle}
             onPress={() => Alert.alert('Simple Button pressed')}>
-            <Text style={styles.buttomActionTextStyle}>{'Edit profile'}</Text>
+            <Text style={styles.buttomActionTextStyle}>{'Profili Düzenle'}</Text>
+        </Pressable>
+        <Pressable
+            style={styles.buttomActionStyle}
+            onPress={() => navigation.navigate('SplashScreen')}>
+            <Text style={styles.buttomActionTextStyle}>{'Çıkış Yap'}</Text>
         </Pressable>
     </View>
 );
@@ -84,7 +88,6 @@ const Posts = () => (
                 margin: 1,
             }} />
         )}
-
     />
 )
 
@@ -96,7 +99,6 @@ const Tabs = () => (
                 if (route.name === 'Posts') {
                     iconName = require('../assets/data_grid_icon.png');
                 }
-                // You can return any component that you like here!
                 return <Image source={iconName} size={size} color={color} style={{ width: 25, height: 25, tintColor: 'black' }} />;
             },
             tabBarStyle: { backgroundColor: '' },
@@ -114,7 +116,7 @@ const Tabs = () => (
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white', // Ekranın arkaplanını whitesmoke yapar
+        backgroundColor: 'white',
     },
     dashboard: {
         flexDirection: 'row',
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttomActionTextStyle: {
-        color: 'black', // Tüm yazıları siyah yapar
+        color: 'black',
         fontWeight: '600',
         marginLeft: 46,
         marginRight: 46
