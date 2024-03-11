@@ -20,7 +20,7 @@ export const bottomTabIcons = [
         name: 'Add',
         active: require('../../assets/add-43-16.png'),
         inactive: require('../../assets/add-43-16.png'),
-        route: 'AddScreen'
+        route: 'NewPostScreen'
     },
     {
         name: 'Messages',
