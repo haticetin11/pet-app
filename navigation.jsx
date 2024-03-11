@@ -10,15 +10,18 @@ import ProfileScreen from './screens/ProfileScreen'
 import ChatListScreen from './screens/ChatList'
 import ChatScreen from './screens/Chat'
 import SearchScreen from './screens/SearchScreen'
-import AddScreen from './screens/AddScreen'
+import CategoryScreen from './screens/CategoryScreen'
+import PostDetail from './screens/PostDetail'
+
 
 const Stack = createStackNavigator();
 
 const SignedInStack = () => (
     <NavigationContainer>
         <Stack.Navigator
-            initialRouteName='SplashScreen'
-            screenOptions={{ headerShown: false}}>
+            initialRouteName='HomeScreen'
+            screenOptions={{ headerShown: false}}
+            >
             <Stack.Screen name='SplashScreen' component={SplashScreen} />
             <Stack.Screen name='HomeScreen' component={HomeScreen} />
             <Stack.Screen name='ProfileScreen' component={ProfileScreen} />
@@ -28,7 +31,17 @@ const SignedInStack = () => (
             <Stack.Screen name='ChatListScreen' component={ChatListScreen}/>
             <Stack.Screen name='ChatScreen' component={ChatScreen}/>
             <Stack.Screen name='SearchScreen' component={SearchScreen}/>
-            <Stack.Screen name='AddScreen' component={AddScreen}/>
+            <Stack.Screen name='CategoryScreen' component={CategoryScreen}
+            options={({route})=>({title: route.params.category})}
+            screenOptions={{ headerShown: true}}
+            />
+            <Stack.Screen name='PostDetail' component={PostDetail}
+            options={{headerStyle:{backgroundColor:'#3b82f6'},
+        }}
+            screenOptions={{ headerShown: true}}
+            />
+            
+            
         </Stack.Navigator>
     </NavigationContainer>
 )

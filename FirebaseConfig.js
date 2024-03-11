@@ -4,13 +4,13 @@ import {getFirestore} from "firebase/firestore";
 import { initializeAuth, getAuth, getReactNativePersistence } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
- const firebaseConfig = {
-  apiKey: "AIzaSyDtuKt71rUcUYPzd9JNj_GjlpbWaXY8YJ0",
-  authDomain: "pet-app-a8358.firebaseapp.com",
-  projectId: "pet-app-a8358",
-  storageBucket: "pet-app-a8358.appspot.com",
-  messagingSenderId: "844609664375",
-  appId: "1:844609664375:web:1c02f0fb8b5e2348131d72"
+const firebaseConfig = {
+  apiKey: "AIzaSyD6a2BxHlcioSZcpyCAl0tALcJQlADbPoM",
+  authDomain: "pettty-15803.firebaseapp.com",
+  projectId: "pettty-15803",
+  storageBucket: "pettty-15803.appspot.com",
+  messagingSenderId: "137801457895",
+  appId: "1:137801457895:web:1c75efd97aaa1b8cc14242"
 };
 
 // Initialize Firebase

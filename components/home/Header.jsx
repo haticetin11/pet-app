@@ -10,17 +10,7 @@ const Header = ({navigation}) => {
                         <Text style={styles.logo}>Miavvy</Text>
                     </View>
             </TouchableOpacity>
-            <View style={styles.iconContiner}>
-                {/* <TouchableOpacity>
-                    <Image source={require('../../assets/heart_icon.png')} style={styles.icon} />
-                </TouchableOpacity> */}
-                <TouchableOpacity onPress={() => navigation.navigate('ChatListScreen')}>
-                    <View style={styles.unreadBadge}>
-                        <Text style={styles.unreadBadgeText}>1</Text>
-                    </View>
-                    <Image source={require('../../assets/facebook_messenger_icon.png')} style={styles.icon} />
-                </TouchableOpacity>
-            </View>
+            
         </View>
     )
 }
@@ -43,7 +33,8 @@ const styles = StyleSheet.create({
     logo: {
         color: 'black',
         fontSize: 24,
-        fontWeight: '600'
+        fontWeight: '600',
+        paddingTop:16,
     },
     icon: {
         width: 30,

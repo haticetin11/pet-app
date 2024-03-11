@@ -5,12 +5,14 @@ import { LinearGradient } from 'expo-linear-gradient'
 export const ProfilePic = () => {
     return (
         <View>
-            <LinearGradient
+            <Image source={require('../../assets/pawprint.png')} style={styles.story} />
+
+            {/* <LinearGradient
                 colors={['#000', '#000', '#000']}
                 start={{ x: 0.0, y: 1.0 }} end={{ x: 1.0, y: 1.0 }}
                 style={styles.storyGradient}>
-                <Image source={{ uri: 'https://i.pravatar.cc' }} style={styles.story} />
-            </LinearGradient>
+                <Image source={require('../../assets/pawprint.png')} style={styles.story} />
+            </LinearGradient> */}
         </View>
     )
 }
@@ -25,12 +27,12 @@ const styles = StyleSheet.create({
         margin: 5,
     },
     story: {
-        width: 75,
-        height: 75,
-        borderRadius: 75 / 2,
+        width: 52,
+        height: 52,
+        borderRadius: 52,
         alignSelf: 'center',
-        borderColor: '#000',
-        borderWidth: 2,
+        borderColor: 'white',
+        
 
     }
 })
