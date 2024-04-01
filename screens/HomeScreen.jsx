@@ -47,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
 
   const getLatestItemList=async()=>{
     setLatestItemList([]);
-    const querySnapshot= await getDocs(collection(db,'UserPost'),orderBy('createdAd','desc'));
+    const querySnapshot= await getDocs(collection(db,'UserPost'),orderBy('createdAt','desc'));
     querySnapshot.forEach((doc)=>{
       console.log("Docs",doc.data);
       setLatestItemList(latestItemList=>[...latestItemList,doc.data()]);

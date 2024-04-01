@@ -1,33 +1,57 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../components/home/Header';
-import { Feather } from '@expo/vector-icons'; // Örnek olarak Feather ikon paketini kullanıyoruz
+import { getFirestore, collection, query, orderBy, getDocs, where } from 'firebase/firestore';
+import { app } from '../FirebaseConfig';
+import Post from '../components/home/Post';
+import { SearchBar } from 'react-native-elements';
 import BottomTabs, { bottomTabIcons } from '../components/home/BottomTabs';
 
+
 const SearchScreen = ({ navigation }) => {
-    const handleSearch = () => {
-        // Arama işlemleri burada gerçekleştirilebilir
-        console.log('Arama yapılıyor...');
+    const db = getFirestore(app);
+    const [productList, setProductList] = useState([]);
+    const [searchText, setSearchText] = useState('');
+
+    useEffect(() => {
+        getAllProducts();
+    }, []);
+
+    const getAllProducts = async () => {
+        setProductList([]);
+        const q = query(collection(db, 'UserPost'), orderBy('createdAt', 'desc'));
+        const snapshot = await getDocs(q);
+        const products = snapshot.docs.map(doc => doc.data());
+        setProductList(products);
+    };
+
+    const handleSearch = async (text) => {
+        setSearchText(text);
+        setProductList([]);
+        const q = query(collection(db, 'UserPost'), where('title', '>=', text), where('title', '<=', text + '\uf8ff'));
+        const snapshot = await getDocs(q);
+        const products = snapshot.docs.map(doc => doc.data());
+        setProductList(products);
     };
 
     return (
         <SafeAreaView style={styles.safeArea}>
             <Header navigation={navigation} />
-            <View style={styles.container}>
-                <Text style={styles.header}>patili arkadaşını bul.</Text>
-                <View style={styles.searchContainer}>
-                    <Feather name="search" size={24} color="black" style={styles.searchIcon} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="ara.."
-                        placeholderTextColor="#888"
-                    />
-                </View>
-                <TouchableOpacity style={styles.button} onPress={handleSearch}>
-                    <Text style={styles.buttonText}>Bul</Text>
-                </TouchableOpacity>
-            </View>
+            <SearchBar
+                placeholder='Search'
+                lightTheme={true}
+                round={true}
+                containerStyle={{ backgroundColor: 'white' }}
+                onChangeText={handleSearch}
+                value={searchText}
+            />
+            <FlatList
+                data={productList}
+                renderItem={({ item, index }) => <Post item={item} key={index} />}
+                keyExtractor={(item, index) => index.toString()}
+            />
+            <Post latestItemList={productList}/>
             <BottomTabs icons={bottomTabIcons} navigation={navigation} />
         </SafeAreaView>
     );
@@ -37,47 +61,6 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         backgroundColor: '#fff',
-    },
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    header: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
-    searchContainer: {
-        marginTop: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-        paddingHorizontal: 10,
-    },
-    searchIcon: {
-        marginRight: 10,
-    },
-    input: {
-        flex: 1,
-        height: 40,
-        paddingHorizontal: 10,
-        fontSize: 16,
-    },
-    button: {
-        marginTop: 20,
-        backgroundColor: 'black',
-        borderRadius: 5,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-    },
-    buttonText: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 16,
     },
 });
 

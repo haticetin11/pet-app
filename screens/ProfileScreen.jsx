@@ -10,14 +10,20 @@ import HeaderProfile from '../components/profile/HeaderProfile';
 import ProfileDashboard from '../components/profile/ProfileDashboard'; 
 import { getAuth } from '@firebase/auth';
 import {app} from '../FirebaseConfig'
+import PostItem from '../components/home/PostItem'
+import Post from '../components/home/Post';
+import { collection, doc, getDocs, getFirestore, orderBy, query, where } from 'firebase/firestore';
+
 
 const auth = getAuth(app);
 
 const Tab = createMaterialTopTabNavigator();
 const numberOfCols = 3;
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = ({ navigation}) => {
     const [userEmail, setUserEmail] = useState(null);
+    const[latestItemList,setLatestItemList]=useState([]);
+    const db=getFirestore(app);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
@@ -31,6 +37,24 @@ const ProfileScreen = ({ navigation }) => {
         return unsubscribe;
     }, []);
 
+    useEffect(()=>{
+        getLatestItemList();
+      },[])
+
+    
+  const getLatestItemList=async()=>{
+    const q = query(collection(db, "UserPost"), where("useremail", "==", userEmail));
+    setLatestItemList([]);
+
+    const querySnapshot4 = await getDocs(q);
+    querySnapshot4.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    console.log(doc.id, " => ", doc.data());
+    setLatestItemList(latestItemList=>[...latestItemList,doc.data()]);
+    });
+  }
+    
+
     return (
         <SafeAreaView style={styles.container}>
             <HeaderProfile navigation={navigation} />
@@ -41,18 +65,18 @@ const ProfileScreen = ({ navigation }) => {
             <BottomActions navigation={navigation} />
             <BottomTabs icons={bottomTabIcons} navigation={navigation} />
             <Divider />
-            <Tabs />
+            <Post latestItemList={latestItemList}
+          heading={'Post'}
+          />
         </SafeAreaView>
     );
 }
 
 const Bio = ({ userEmail }) => (
     <View>
-      
-          <Text style={{ color: 'black', fontWeight: '800', marginLeft: 8 }}>
-            {userEmail}
-          </Text>
-        
+      <Text style={{ color: 'black', fontWeight: '800', marginLeft: 8 }}>
+        {userEmail}
+      </Text>        
     </View>
   );
 
@@ -75,21 +99,20 @@ const BottomActions = ({navigation}) => (
 const screenWidth = Dimensions.get('window').width;
 const imageSize = screenWidth * 0.15;
 
-const Posts = () => (
-    <FlatList
-        style={{ backgroundColor: 'whitesmoke' }}
-        data={userPosts}
-        keyExtractor={item => item.id}
-        numColumns={numberOfCols}
-        renderItem={({ item }) => (
-            <Image key={item.id} source={{ uri: item.url }} style={{
-                flex: 1,
-                aspectRatio: 1,
-                margin: 1,
-            }} />
-        )}
-    />
-)
+// const Post = ({ latestItemList }) => (
+//     <FlatList
+//         style={{ backgroundColor: 'whitesmoke' }}
+//         data={latestItemList}
+//         keyExtractor={(item, index) => index.toString()} // veya item.id kullanabilirsiniz
+//         renderItem={({ item }) => (
+//             <Image key={item.id} source={{ uri: item.url }} style={{
+//                 flex: 1,
+//                 aspectRatio: 1,
+//                 margin: 1,
+//             }} />
+//         )}
+//     />
+// );
 
 const Tabs = () => (
     <Tab.Navigator
@@ -109,7 +132,7 @@ const Tabs = () => (
             tabBarLabel: () => null,
         })}
     >
-        <Tab.Screen name="Posts" component={Posts} />
+        <Tab.Screen name="Posts" component={Post} />
     </Tab.Navigator>
 )
 
