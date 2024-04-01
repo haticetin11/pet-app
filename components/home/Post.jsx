@@ -4,7 +4,7 @@ import PostItem from './PostItem';
 
 export default function Post({ latestItemList,heading }) {
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.title}>{heading}</Text>
       <FlatList
         data={latestItemList}
@@ -17,6 +17,9 @@ export default function Post({ latestItemList,heading }) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 256
+  },
   title: {
     fontWeight: 'bold',
     fontSize: 20,
