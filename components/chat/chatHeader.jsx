@@ -1,12 +1,12 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const ChatHeader = ({navigation}) => {
+const ChatHeader = ({navigation, navigate, label}) => {
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+            <TouchableOpacity onPress={() => navigation.navigate(`${navigate}`)}>
                 <View style={styles.textWrapper}>
-                        <Text style={styles.logo}>← Miavvy</Text>
+                        <Text style={styles.logo}>← {label}</Text>
                     </View>
             </TouchableOpacity>
         </View>
@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     },
     logo: {
         color: 'black',
-        fontSize: 24,
-        fontWeight: '600'
+        fontSize: 16,
+        // fontWeight: '600'
     },
     icon: {
         width: 30,

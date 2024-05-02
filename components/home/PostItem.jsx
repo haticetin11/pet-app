@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     title1Container: {
       position: 'absolute',
       bottom: 0,
-      backgroundColor: '#F4AE98',
+      backgroundColor: 'black',
       paddingVertical: 4,
       paddingHorizontal: 8,
       borderRadius: 4,
@@ -61,11 +61,13 @@ const styles = StyleSheet.create({
       fontSize: 15,
     },
     title2: {
-      fontSize: 15,
-      marginBottom: 5,
+      fontSize: 16,
+      fontWeight: "500",
+      marginBottom: 4,
     },
     title3: {
       fontSize: 15,
-      marginBottom: 25,
+      fontWeight: "400",
+      marginBottom: 24,
     },
   });

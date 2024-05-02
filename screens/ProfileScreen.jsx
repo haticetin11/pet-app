@@ -21,38 +21,51 @@ const Tab = createMaterialTopTabNavigator();
 const numberOfCols = 3;
 
 const ProfileScreen = ({ navigation}) => {
-    const [userEmail, setUserEmail] = useState(null);
+    const[name,setName]=useState('')
+    const [userEmail, setUserEmail] = useState('');
     const[latestItemList,setLatestItemList]=useState([]);
     const db=getFirestore(app);
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            if (user) {
-                setUserEmail(user.email);
-            } else {
-                setUserEmail(null);
-            }
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+          setName(user?.displayName ?? " ");
+          setUserEmail(user?.email ?? " ");
         });
-
+    
         return unsubscribe;
-    }, []);
+      }, [auth]);
 
-    useEffect(()=>{
-        getLatestItemList();
-      },[])
+      useEffect(() => {
+        getLatestItemList()
+      }, []); 
 
     
-  const getLatestItemList=async()=>{
-    const q = query(collection(db, "UserPost"), where("useremail", "==", userEmail));
-    setLatestItemList([]);
+      const getLatestItemList = async () => {
+    try {
+        const userRef = collection(db, "users"); // Kullanıcı koleksiyonunu referans al
+        const userQuery = query(userRef, where('useremail', '==', userEmail)); // Kullanıcıyı email adresine göre sorgula
+        const userSnapshot = await getDocs(userQuery); // Kullanıcı sorgusunu gerçekleştir
+        if (!userSnapshot.empty) {
+            userSnapshot.forEach((userDoc) => {
+                const userData = userDoc.data();
+                console.log(userData); // userData içeriğini logla
+                setName(userData.name); // Kullanıcı adını state'e ayarla
+            });
+        }
+    
+        const postRef = collection(db, "UserPost"); // Post koleksiyonunu referans al
+        const postQuery = query(postRef, where('useremail', '==', userEmail)); // Kullanıcının postlarını email adresine göre sorgula
+        const postSnapshot = await getDocs(postQuery); // Post sorgusunu gerçekleştir
+        const postData = postSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setLatestItemList(postData);
+        console.log(postData);
+    } catch (error) {
+        console.error("Error fetching users: ", error);
+    }
+}
 
-    const querySnapshot4 = await getDocs(q);
-    querySnapshot4.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
-    setLatestItemList(latestItemList=>[...latestItemList,doc.data()]);
-    });
-  }
+    
+    
     
 
     return (
@@ -60,7 +73,9 @@ const ProfileScreen = ({ navigation}) => {
             <HeaderProfile navigation={navigation} />
             <View style={styles.dashboard}>
                 <ProfilePic />
+                
                 <Text><Bio userEmail={userEmail} /> {/* Bio component'ine userEmail prop'unu geçiyoruz */}</Text>
+                <Text style={{ color: 'red', fontWeight: '800', marginLeft: 8 }}>{name}</Text>
             </View>
             <BottomActions navigation={navigation} />
             <BottomTabs icons={bottomTabIcons} navigation={navigation} />
@@ -72,8 +87,9 @@ const ProfileScreen = ({ navigation}) => {
     );
 }
 
-const Bio = ({ userEmail }) => (
+const Bio = ({ userEmail,name }) => (
     <View>
+        
       <Text style={{ color: 'black', fontWeight: '800', marginLeft: 8 }}>
         {userEmail}
       </Text>        
@@ -99,42 +115,7 @@ const BottomActions = ({navigation}) => (
 const screenWidth = Dimensions.get('window').width;
 const imageSize = screenWidth * 0.15;
 
-// const Post = ({ latestItemList }) => (
-//     <FlatList
-//         style={{ backgroundColor: 'whitesmoke' }}
-//         data={latestItemList}
-//         keyExtractor={(item, index) => index.toString()} // veya item.id kullanabilirsiniz
-//         renderItem={({ item }) => (
-//             <Image key={item.id} source={{ uri: item.url }} style={{
-//                 flex: 1,
-//                 aspectRatio: 1,
-//                 margin: 1,
-//             }} />
-//         )}
-//     />
-// );
 
-const Tabs = () => (
-    <Tab.Navigator
-        screenOptions={({ route }) => ({
-            tabBarIcon: ({ color, size }) => {
-                let iconName;
-                if (route.name === 'Posts') {
-                    iconName = require('../assets/data_grid_icon.png');
-                }
-                return <Image source={iconName} size={size} color={color} style={{ width: 25, height: 25, tintColor: 'black' }} />;
-            },
-            tabBarStyle: { backgroundColor: '' },
-            tabBarIndicatorStyle: {
-                backgroundColor: 'black',
-                height: 1,
-            },
-            tabBarLabel: () => null,
-        })}
-    >
-        <Tab.Screen name="Posts" component={Post} />
-    </Tab.Navigator>
-)
 
 const styles = StyleSheet.create({
     container: {

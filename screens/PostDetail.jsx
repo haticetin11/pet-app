@@ -37,19 +37,26 @@ export default function PostDetail({navigation}) {
                 style={styles.image}
             />
             <View style={styles.content}>
-                <Text style={styles.title}>{product?.title}</Text>
-                <View style={styles.categoryContainer}>
-                    <Text style={styles.category}>{product.category}</Text>
-                </View>
-                <Text style={styles.label}>Description:</Text>
-                <Text style={styles.description}>{product?.desc}</Text>
+                {/* <Text style={styles.label}>Description:</Text>  */}
+                {/* <Text style={styles.userinfo}>{product.useremail}</Text> */}
+                <Text style={styles.description}><Text style={styles.userinfo}>{product.useremail}:</Text>{" "}{product?.title}{" "}</Text>
             </View>
-            <View style={styles.userinfoContainer}>
+            <View style={styles.infoContainer}>
+            <Text style={styles.categoryTitle}>Description: </Text>
+            <Text style={styles.category}>𐙚{product?.desc}</Text>
+            <Text style={styles.category}>𐙚{product.category}</Text>
+                {/* <View style={styles.categoryContainer}>
+                </View> */}
+            </View>
+            <View style={styles.buttonContainer}>
+            {/* <View style={styles.userinfoContainer}>
                 <Text style={styles.userinfo}>{product.useremail}</Text>
-            </View>
-            <TouchableOpacity style={styles.userinfoContainer}>
-                <Text style={styles.userinfo}>send message</Text>
+            </View> */}
+            <TouchableOpacity >
+                <Text style={styles.buttonSend}>Send Message</Text>
             </TouchableOpacity>
+            </View>
+            
             <BottomTabs icons={bottomTabIcons} navigation={navigation} />
         </ScrollView>
     )
@@ -69,18 +76,18 @@ const styles = StyleSheet.create({
     image: {
         height: 200,
         width: 200,
-        marginBottom: 15,
-        padding:150,
-        borderRadius:5,
-        marginTop:20,
+        marginBottom: 16,
+        padding:156,
+        borderRadius:4,
+        marginTop:24,
+        alignItems: 'center',
     },
     content: {
         alignItems: 'center',
     },
     title: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 10,
+        fontSize: 16,
+        color: '#333'
     },
     categoryContainer: {
         backgroundColor: 'lightgray',
@@ -91,6 +98,10 @@ const styles = StyleSheet.create({
     },
     category: {
         fontSize: 14,
+        fontWeight: '500',
+    },
+    categoryTitle: {
+        fontSize: 16,
         fontWeight: 'bold',
     },
     label: {
@@ -100,17 +111,37 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 16,
+        marginRight: 8
+    },
+    infoContainer: {
+        flexDirection: 'col',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        gap: 8,
+        marginTop: 16
+    },
+    buttonContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 4
     },
     userinfoContainer: {
-        backgroundColor: '#f0f0f0',
-        padding: 10,
-        borderRadius: 8,
+        backgroundColor: '#111',
+        color: 'gray',
+        paddingHorizontal: 24,
+        paddingVertical: 8,
+        borderRadius: 4,
         marginTop: 20,
-        borderColor: 'gray',
+        borderColor: '#111',
         borderWidth: 1,
     },
     userinfo: {
         fontSize: 16,
+        color: 'black',
+        fontWeight: '600',
+        paddingRight: 8
     },
     shareButton: {
         position: 'absolute',
@@ -119,7 +150,17 @@ const styles = StyleSheet.create({
         zIndex: 1,
         borderColor: 'gray',
         borderWidth: 1,
-        padding:3,
+        padding:4,
         borderRadius: 8,
     },
+    buttonSend:{
+        backgroundColor: '#E1DCDA',
+        padding: 10,
+        margin: 5,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height:50,
+        width:150
+    }
 })

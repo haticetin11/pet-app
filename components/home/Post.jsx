@@ -8,6 +8,8 @@ export default function Post({ latestItemList,heading }) {
       <Text style={styles.title}>{heading}</Text>
       <FlatList
         data={latestItemList}
+        
+       
         renderItem={({ item, index }) => (
           <PostItem item={item}/>
         )}
