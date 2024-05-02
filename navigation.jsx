@@ -12,37 +12,39 @@ import ChatScreen from './screens/Chat'
 import SearchScreen from './screens/SearchScreen'
 import CategoryScreen from './screens/CategoryScreen'
 import PostDetail from './screens/PostDetail'
-
+import { Provider } from 'react-native-paper'
 
 const Stack = createStackNavigator();
 
 const SignedInStack = () => (
     <NavigationContainer>
-        <Stack.Navigator
-            initialRouteName='HomeScreen'
-            screenOptions={{ headerShown: false}}
-            >
-            <Stack.Screen name='SplashScreen' component={SplashScreen} />
-            <Stack.Screen name='HomeScreen' component={HomeScreen} />
-            <Stack.Screen name='ProfileScreen' component={ProfileScreen} />
-            <Stack.Screen name='NewPostScreen' component={NewPostScreen} />
-            <Stack.Screen name='LoginScreen' component={LoginScreen} />
-            <Stack.Screen name='SignUpScreen' component={SignUpScreen} />
-            <Stack.Screen name='ChatListScreen' component={ChatListScreen}/>
-            <Stack.Screen name='ChatScreen' component={ChatScreen}/>
-            <Stack.Screen name='SearchScreen' component={SearchScreen}/>
-            <Stack.Screen name='CategoryScreen' component={CategoryScreen}
-            options={({route})=>({title: route.params.category})}
-            screenOptions={{ headerShown: true}}
-            />
-            <Stack.Screen name='PostDetail' component={PostDetail}
-            options={{headerStyle:{backgroundColor:'#3b82f6'},
-        }}
-            screenOptions={{ headerShown: true}}
-            />
-            
-            
-        </Stack.Navigator>
+        <Provider>
+            <Stack.Navigator
+                initialRouteName='HomeScreen'
+                screenOptions={{ headerShown: false}}
+                >
+                <Stack.Screen name='SplashScreen' component={SplashScreen} />
+                <Stack.Screen name='HomeScreen' component={HomeScreen} />
+                <Stack.Screen name='ProfileScreen' component={ProfileScreen} />
+                <Stack.Screen name='NewPostScreen' component={NewPostScreen} />
+                <Stack.Screen name='LoginScreen' component={LoginScreen} />
+                <Stack.Screen name='SignUpScreen' component={SignUpScreen} />
+                <Stack.Screen name='ChatListScreen' component={ChatListScreen}/>
+                <Stack.Screen name='ChatScreen' component={ChatScreen}/>
+                <Stack.Screen name='SearchScreen' component={SearchScreen}/>
+                <Stack.Screen name='CategoryScreen' component={CategoryScreen}
+                options={({route})=>({title: route.params.category})}
+                screenOptions={{ headerShown: true}}
+                />
+                <Stack.Screen name='PostDetail' component={PostDetail}
+                options={{headerStyle:{backgroundColor:'#3b82f6'},
+            }}
+                screenOptions={{ headerShown: true}}
+                />
+                
+                
+            </Stack.Navigator>
+        </Provider>
     </NavigationContainer>
 )
 

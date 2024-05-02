@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, Pressable, Image, ToastAndroid, KeyboardAvoidingView, Platform } from 'react-native';
-import { getFirestore, getDocs, collection, doc, setDoc, addDoc } from 'firebase/firestore';
+import { View, Text, StyleSheet, TextInput, Pressable, Image, KeyboardAvoidingView, Platform } from 'react-native';
+import { getFirestore, getDocs, collection, addDoc } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { app } from '../../FirebaseConfig';
 import { Formik } from 'formik';
@@ -20,11 +20,13 @@ export default function AddNewPost({ navigation }) {
     const storage = getStorage();
     const [categoryList, setCategoryList] = useState([]);
     const [userEmail, setUserEmail] = useState(null);
+    const [userName, setUserName] = useState('');
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             if (user) {
                 setUserEmail(user.email);
+                setUserName(user.displayName); // Kullanıcı adını al
             } else {
                 setUserEmail(null);
             }
@@ -73,6 +75,7 @@ export default function AddNewPost({ navigation }) {
                 category: values.category,
                 image: downloadUrl,
                 useremail: userEmail,
+                username: userName, // Kullanıcı adını ekle
                 createdAt: new Date()
             });
 
@@ -87,12 +90,11 @@ export default function AddNewPost({ navigation }) {
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={{ flex: 1 }}
-                
             >
                 <ScrollView>
                     <Text>add new post</Text>
                     <Formik
-                        initialValues={{ title: '', desc: '', category: '', useremail: '',createdAt:Date.now() }}
+                        initialValues={{ title: '', desc: '', category: '' }}
                         onSubmit={onSubmitMethod}
                         validationSchema={Yup.object({
                             title: Yup.string().required('Title is required'),

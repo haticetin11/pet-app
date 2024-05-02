@@ -59,7 +59,7 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} />
       
-      <ScrollView >
+      <ScrollView nestedScrollEnabled={true} style={{ width: "100%" }} >
       <View style={{paddingHorizontal: 16, flexDirection: "row", alignItems: 'center', gap: 8}}>
           <Image source={require('../assets/pawprint.png')}
           style={{width: 52, aspectRatio: 1, borderRadius: 52}}
@@ -80,9 +80,13 @@ const HomeScreen = ({ navigation }) => {
           </View>
           <Slider sliderList={sliderList}/>
           <Categories categoryList={categoryList}/>
-          <Post latestItemList={latestItemList}
-          heading={'Latest Paws'}
-          />
+          <ScrollView horizontal={true} style={{ width: "100%" }}>
+            <Post latestItemList={latestItemList}
+            heading={'Latest Paws'}
+            />
+
+          </ScrollView>
+          
 
         </View>
       </ScrollView>

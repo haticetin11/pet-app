@@ -6,6 +6,7 @@ import Validator from 'email-validator';
 import { app } from '../../FirebaseConfig';
 import { createUserWithEmailAndPassword } from 'firebase/auth'; // Auth kütüphanesinden import ediliyor
 import { getAuth } from "firebase/auth";
+import { collection, getFirestore, addDoc } from 'firebase/firestore';
 
 const auth = getAuth(app);
 const SignUpForm = ({ navigation }) => {
@@ -22,6 +23,14 @@ const SignUpForm = ({ navigation }) => {
     try {
       const response = await createUserWithEmailAndPassword(auth,email,password, username); // Kullanıcı adı kaldırıldı
       console.log(response);
+      const db = getFirestore(app);
+      const userRef = collection(db, 'users');
+      await addDoc(userRef, {
+        email: email,
+        name: username
+        // Add more user data as needed
+      });
+  
       alert('Register Successful!');
     } catch (error) {
       console.log(error);
